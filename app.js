@@ -1,0 +1,20 @@
+const express = require('express');
+const app = express();
+
+const port = 3000;
+
+app.get('/', (req, res) => {
+  res.send('Hello world!');
+});
+
+app.get('/about', (req, res) => {
+  res.send('about');
+});
+
+app.get('/contacts', (req, res) => {
+  res.send('contacts');
+});
+
+app.listen(port, () => {
+  console.log('fesfsfse');
+});

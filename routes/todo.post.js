@@ -9,15 +9,12 @@ const { readAndParse, parseAndWrite} = require('../utils');
 router.post(mainURI, jsonParser, (req, res) => {
   if (!req.body) return res.sendStatus(400);
 
-  
-
   let todo = {
     uuid: v4(),
     name: req.body.name,
     done: req.body.done ?? false,
     createdAt: +new Date(),
   };
-  JSON.stringify(todo)
   let todos = readAndParse();
   todos.push(todo);
   parseAndWrite(todos);

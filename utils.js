@@ -1,12 +1,12 @@
 const fs = require('fs');
-const filePath = 'todos.json';
+const {dataBase} = require('./config')
 
 const readAndParse = () => {
-  return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  return JSON.parse(fs.readFileSync(dataBase, 'utf8'));
 };
 
 const parseAndWrite = (todos) => {
-  fs.writeFileSync(filePath, JSON.stringify(todos));
+  fs.writeFileSync(dataBase, JSON.stringify(todos));
 };
 
 const filter = (filterBy, order, pp, page) => {
@@ -27,7 +27,7 @@ const filter = (filterBy, order, pp, page) => {
   if (order === 'desc') {
     filteredTodos.sort((a, b) => b.createdAt - a.createdAt);
   }
-  console.log(filteredTodos);
+
   const count = filteredTodos.length;
   const lastOnPage = page * pp;
   const firstOnPage = lastOnPage - pp;
@@ -37,6 +37,4 @@ const filter = (filterBy, order, pp, page) => {
   return { count: count, todos: todosOnPage };
 };
 
-module.exports.readAndParse = readAndParse;
-module.exports.parseAndWrite = parseAndWrite;
-module.exports.filter = filter;
+module.exports = {readAndParse, parseAndWrite, filter}

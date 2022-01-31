@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const mainURI = '/todos';
 const { readAndParse, filter } = require('../utils');
 
 router.get('/todos', (req, res) => {

@@ -1,2 +1,4 @@
-
+# node modules
 node_modules
+# db
+todos.json

@@ -37,4 +37,10 @@ const filter = (filterBy, order, pp, page) => {
   return { count: count, todos: todosOnPage };
 };
 
-module.exports = {readAndParse, parseAndWrite, filter}
+const errorsHandler = (errors)=>{
+  return errors.errors.map(err => err.msg).join(', ')
+}
+
+module.exports = {readAndParse, parseAndWrite, filter,errorsHandler}
+
+// filteredTasks.sort((a, b) => order === 'desc' ? b.createdAt - a.createdAt : a.createdAt - b.createdAt)

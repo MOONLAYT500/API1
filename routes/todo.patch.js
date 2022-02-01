@@ -7,7 +7,7 @@ const { body, param, validationResult } = require('express-validator');
 router.patch(
   '/todos/:id',
   jsonParser,
-  param('taskId').notEmpty().withMessage('param "taskId" is empty'),
+  param('id').notEmpty().withMessage('param "id" is empty'),
   body('name')
     .optional()
     .isLength({ min: 1 })

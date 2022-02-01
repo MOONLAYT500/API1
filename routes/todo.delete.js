@@ -5,7 +5,7 @@ const { param, validationResult } = require('express-validator');
 
 router.delete(
   '/todos/:id',
-  param('taskId').notEmpty().withMessage('param "taskId" is empty'),
+  param('id').notEmpty().withMessage('param "id" is empty'),
   (req, res) => {
     try {
       const errors = validationResult(req);
@@ -13,7 +13,7 @@ router.delete(
       if (!errors.isEmpty()) {
         return res.status(400).json({ message: errorsHandler(errors) });
       }
-
+      
       const id = req.params.id;
       let todos = readAndParse();
       todos = todos.filter((todo) => todo.uuid !== id);

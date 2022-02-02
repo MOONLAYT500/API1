@@ -5,19 +5,23 @@
   "main": "app.js",
   "scripts": {
     "test": "test",
-    "start": "node app.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "keywords": [
     "test",
     "api"
   ],
-  "author": "MOONLayt500",
+  "author": "MOONLAYT500",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.2",
     "express-validator": "^6.14.0",
+    "pg": "^8.7.1",
+    "pg-hstore": "^2.3.4",
     "recursive-readdir-sync": "^1.0.6",
+    "sequelize": "^6.15.0",
     "uuid": "^8.3.2"
   }
 }

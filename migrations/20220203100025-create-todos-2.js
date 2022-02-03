@@ -2,7 +2,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable(
-      'todos2s',
+      'todos',
       {
         uuid: {
           type: Sequelize.UUID,
@@ -30,6 +30,6 @@ module.exports = {
     );
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('todos2s');
+    await queryInterface.dropTable('todos');
   },
 };

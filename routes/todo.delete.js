@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { param, validationResult } = require('express-validator');
-const { deleteTodo, errorsHandler } = require('../db');
+const {todos, errorsHandler } = require('../db');
 
 router.delete(
   '/todos/:id',
@@ -13,8 +13,13 @@ router.delete(
       if (!errors.isEmpty()) {
         return res.status(400).json({ message: errorsHandler(errors) });
       }
+      
+      await todos.destroy({
+        where: {
+          uuid: req.params.id,
+        },
+      });
 
-      await deleteTodo(req.params.id);
       res.send('deleted');
     } catch (e) {
       return res.status(400).json({ message: e });

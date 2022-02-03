@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jsonParser = express.json();
 const { query, validationResult } = require('express-validator');
-const { getTodos, errorsHandler } = require('../db');
+const { todos, getTodos, errorsHandler } = require('../db');
 
 router.get(
   '/todos',
@@ -38,11 +38,18 @@ router.get(
         req.query.page ?? 1,
         filterBy,
       ];
-      console.log(params);
-      let date = 'asc';
-      let todos = await getTodos(...params);
-      console.log(todos);
-      res.send({ count: todos.length, todos: todos });
+
+      
+
+      let recievedTodos = await todos.findAndCountAll({
+        where: !filterBy ? {} : { done: filterBy },
+        order: [['createdAt', req.query.order]],
+        offset: req.query.pp * (req.query.page - 1),
+        limit: req.query.pp,
+        logging: true,
+      });
+
+      res.send({ count: todos.length, todos: recievedTodos });
     } catch (e) {
       return res.status(400).json({ message: e });
     }
@@ -50,3 +57,6 @@ router.get(
 );
 
 module.exports = router;
+
+
+// getTodos(...params);

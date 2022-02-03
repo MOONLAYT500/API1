@@ -37,54 +37,13 @@ const todos = sequelize.define(
 );
 todos.sync();
 
-const getTodos = (date, pp, page,filterBy = { [Op.or]: [true, false] }) =>
-  todos.findAndCountAll({
-    where: {
-      done: filterBy,
-    },
-    order: [['createdAt', date]],
-    offset:pp*(page-1),
-    limit:pp
-  });
 
-const createTodo = (name, done) =>
-  todos.create({
-    name: name,
-    done: done ?? false,
-  });
-
-const updateTodo = (id, name, done) => {
-  todos.update(
-    {
-      name: name,
-      done: done,
-    },
-    {
-      where: {
-        uuid: id,
-      },
-    }
-  );
-};
-
-const deleteTodo = (id) => {
-  todos.destroy({
-    where: {
-      uuid: id,
-    },
-  });
-};
 
 const errorsHandler = (errors) => {
   return errors.errors.map((err) => err.msg).join(', ');
 };
 
 module.exports = {
-  createTodo,
-  updateTodo,
-  deleteTodo,
-  getTodos,
+  todos,
   errorsHandler,
 };
-
-

@@ -3,7 +3,7 @@ const router = express.Router();
 const { v4 } = require('uuid');
 const { body, validationResult } = require('express-validator');
 const jsonParser = express.json();
-const { createTodo, errorsHandler } = require('../db');
+const { todos, errorsHandler } = require('../db');
 
 router.post(
   '/todos',
@@ -19,7 +19,10 @@ router.post(
         return res.status(400).json({ message: errorsHandler(errors) });
       }
 
-      await createTodo(req.body.name, req.body.body);
+      await todos.create({
+        name: req.body.name,
+        done: req.body.done ?? false,
+      })
 
       res.send('ok');
     } catch (e) {

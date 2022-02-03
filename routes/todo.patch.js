@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jsonParser = express.json();
 const { body, param, validationResult } = require('express-validator');
-const { updateTodo } = require('../db');
+const { todos } = require('../db');
 
 router.patch(
   '/todos/:id',
@@ -20,7 +20,17 @@ router.patch(
         return res.status(400).json({ message: errorsHandler(errors) });
       }
 
-      await updateTodo(req.params.id, req.body.name, req.body.done);
+      await todos.update(
+        {
+          name: req.body.name,
+          done: req.body.done,
+        },
+        {
+          where: {
+            uuid:req.params.id,
+          },
+        }
+      );
 
       res.send('patched');
     } catch (e) {
@@ -31,10 +41,3 @@ router.patch(
 
 module.exports = router;
 
-// const todos = readAndParse();
-// const todo = todos.find((todo) => todo.uuid == id);
-// index = todos.findIndex((todo) => todo.uuid == id);
-// todo.name = req.body.name;
-// todo.done = req.body.done;
-// todos.splice(index, 1, todo);
-// parseAndWrite(todos);

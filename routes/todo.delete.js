@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const { param, validationResult } = require('express-validator');
-const {todos, errorsHandler } = require('../db');
+const {errorsHandler } = require('../errorHandlers');
+const {todos} = require('../models/todos')
 
 router.delete(
   '/todos/:id',

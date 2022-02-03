@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { v4 } = require('uuid');
 const { body, validationResult } = require('express-validator');
 const jsonParser = express.json();
-const { todos, errorsHandler } = require('../db');
+const { errorsHandler } = require('../errorHandlers');
+const {todos} = require('../models/todos')
 
 router.post(
   '/todos',

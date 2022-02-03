@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const jsonParser = express.json();
 const { query, validationResult } = require('express-validator');
-const { todos, getTodos, errorsHandler } = require('../db');
+const { errorsHandler } = require('../errorHandlers');
+const { todos } = require('../models/todos');
 
 router.get(
   '/todos',
@@ -39,8 +40,6 @@ router.get(
         filterBy,
       ];
 
-      
-
       let recievedTodos = await todos.findAndCountAll({
         where: !filterBy ? {} : { done: filterBy },
         order: [['createdAt', req.query.order]],
@@ -57,6 +56,5 @@ router.get(
 );
 
 module.exports = router;
-
 
 // getTodos(...params);

@@ -1,4 +1,4 @@
-const { Sequelize, Op } = require('sequelize');
+const { Sequelize } = require('sequelize');
 
 const sequelize = new Sequelize('todos', 'postgres', 'postgres', {
   host: 'localhost',
@@ -35,15 +35,18 @@ const todos = sequelize.define(
     updatedAt: false,
   }
 );
-todos.sync();
+
+
+let recievedTodos= async(name,done) =>  await todos.create({
+  name: name,
+  done: done ?? false,
+})
 
 
 
-const errorsHandler = (errors) => {
-  return errors.errors.map((err) => err.msg).join(', ');
-};
+
 
 module.exports = {
   todos,
-  errorsHandler,
+  recievedTodos
 };

@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const jsonParser = express.json();
 const { body, param, validationResult } = require('express-validator');
-const { todos } = require('../db');
+const {todos}  = require('../models/todos');
+const {errorsHandler } = require('../errorHandlers');
 
 router.patch(
   '/todos/:id',

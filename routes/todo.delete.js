@@ -1,20 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const { param, validationResult } = require('express-validator');
-const {errorsHandler } = require('../errorHandlers');
-const {todos} = require('../models/todos')
+const { param } = require('express-validator');
+const { handleErrors } = require('../errorHandlers');
+const { todos } = require('../models/index');
 
 router.delete(
   '/todos/:id',
   param('id').notEmpty().withMessage('param "id" is empty'),
+  handleErrors,
   async (req, res) => {
     try {
-      const errors = validationResult(req);
-
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ message: errorsHandler(errors) });
-      }
-      
       await todos.destroy({
         where: {
           uuid: req.params.id,

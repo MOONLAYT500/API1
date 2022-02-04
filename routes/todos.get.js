@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const jsonParser = express.json();
 const { query, validationResult } = require('express-validator');
-const { errorsHandler } = require('../errorHandlers');
-const { todos } = require('../models/todos');
+const { handleErrors } = require('../errorHandlers');
+const { todos } = require('../models/index');
 
 router.get(
   '/todos',
@@ -20,14 +20,9 @@ router.get(
     .withMessage('"page" must be integer')
     .custom((value) => value >= 1)
     .withMessage('"page" cant be 0 '),
+  handleErrors,
   async (req, res) => {
     try {
-      const errors = validationResult(req);
-
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ message: errorsHandler(errors) });
-      }
-
       let filterBy;
       if (req.query.filterBy) {
         filterBy = req.query.filterBy;
@@ -48,7 +43,7 @@ router.get(
         logging: true,
       });
 
-      res.send({ count: todos.length, todos: recievedTodos });
+      res.send({ count: recievedTodos.length, todos: recievedTodos });
     } catch (e) {
       return res.status(400).json({ message: e });
     }
@@ -56,5 +51,3 @@ router.get(
 );
 
 module.exports = router;
-
-// getTodos(...params);

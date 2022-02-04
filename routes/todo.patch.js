@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const jsonParser = express.json();
-const { body, param, validationResult } = require('express-validator');
-const {todos}  = require('../models/todos');
-const {errorsHandler } = require('../errorHandlers');
+const { body, param } = require('express-validator');
+const { todos } = require('../models/index');
+const { handleErrors } = require('../errorHandlers');
 
 router.patch(
   '/todos/:id',
@@ -11,14 +11,16 @@ router.patch(
   param('id').notEmpty().withMessage('param "taskId" is empty'),
   body('name')
     .optional()
-    .isLength({ min: 1 })
+    .isLength({ min: 2 })
     .withMessage('length, lesser then one is not allowed'),
+  handleErrors,
   async (req, res) => {
     try {
-      const errors = validationResult(req);
-
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ message: errorsHandler(errors) });
+      const taskExists = await todos.findOne({
+        where: { name: req.body.name },
+      });
+      if (taskExists) {
+        return res.status(400).json('task with same name exists');
       }
 
       await todos.update(
@@ -28,7 +30,7 @@ router.patch(
         },
         {
           where: {
-            uuid:req.params.id,
+            uuid: req.params.id,
           },
         }
       );
@@ -41,4 +43,3 @@ router.patch(
 );
 
 module.exports = router;
-

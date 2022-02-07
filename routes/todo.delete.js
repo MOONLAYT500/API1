@@ -5,22 +5,22 @@ const { handleErrors } = require('../errorHandlers');
 const { todos } = require('../models/index');
 
 router.delete(
-  '/todos/:id',
-  param('id').notEmpty().withMessage('param "id" is empty'),
-  handleErrors,
-  async (req, res) => {
-    try {
-      await todos.destroy({
-        where: {
-          uuid: req.params.id,
-        },
-      });
+    '/todo/:id',
+    param('id').notEmpty().withMessage('param "id" is empty'),
+    handleErrors,
+    async (req, res) => {
+        try {
+            const todo = await todos.destroy({
+                where: {
+                    uuid: req.params.id,
+                },
+            });
 
-      res.send('deleted');
-    } catch (e) {
-      return res.status(400).json({ message: e });
+            res.send('deleted');
+        } catch (e) {
+            return res.status(400).json({ message: e });
+        }
     }
-  }
 );
 
 module.exports = router;

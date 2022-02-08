@@ -3,6 +3,7 @@ const router = express.Router();
 const { body, param } = require('express-validator');
 const { todos } = require('../models/index');
 const { handleErrors } = require('../errorHandlers');
+const { Op } = require('sequelize');
 
 router.patch(
     '/todo/:id',
@@ -14,8 +15,14 @@ router.patch(
     handleErrors,
     async (req, res) => {
         try {
+            const uuid = req.params.id
+            const { name, done} = req.body;
+
             const taskExists = await todos.findOne({
-                where: { name: req.body.name },
+                where: {
+                    name: req.body.name,
+                    [Op.not]: [{ uuid }],
+                },
             });
             if (taskExists) {
                 return res.status(400).json('task with same name exists');
@@ -23,8 +30,8 @@ router.patch(
 
             await todos.update(
                 {
-                    name: req.body.name,
-                    done: req.body.done,
+                    name,
+                    done,
                 },
                 {
                     where: {
@@ -35,7 +42,7 @@ router.patch(
 
             res.send('patched');
         } catch (e) {
-            return res.status(400).json({ message: e });
+            return res.status(400).json({ message: String(e) });
         }
     }
 );

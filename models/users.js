@@ -9,14 +9,17 @@ module.exports = (sequelize, DataTypes) => {
     }
     users.init(
         {
+            id: {
+                allowNull: false,
+                primaryKey: true,
+                type: DataTypes.UUID,
+                defaultValue: DataTypes.UUIDV4,
+            },
             nickname: DataTypes.STRING,
             password: {
                 type: DataTypes.STRING,
                 set(value) {
-                    this.setDataValue(
-                        'password',
-                        bcrypt.hashSync(this.nickname + value, 10)
-                    );
+                    this.setDataValue('password', bcrypt.hashSync(value, 10));
                 },
             },
         },

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
-const { handleErrors } = require('../errorHandlers');
+const { handleErrors, verifyToken } = require('../errorHandlers');
 const { todos } = require('../models/index');
 
 router.post(
@@ -12,6 +12,9 @@ router.post(
     handleErrors,
     async (req, res) => {
         try {
+            const headers = req.headers.authorization;
+            const token = headers.split(' ')[1];
+            const { id } = verifyToken(token);
             const taskExists = await todos.findOne({
                 where: { name: req.body.name },
             });
@@ -20,6 +23,7 @@ router.post(
             }
 
             const todo = await todos.create({
+                user_id: id,
                 name: req.body.name,
                 done: false,
             });

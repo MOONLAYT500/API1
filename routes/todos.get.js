@@ -1,8 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { query } = require('express-validator');
-const { handleErrors } = require('../errorHandlers');
+const { handleErrors, verifyToken } = require('../errorHandlers');
 const { todos } = require('../models/index');
+const authentificate = require('../auth');
 
 router.get(
     '/todos',
@@ -21,19 +22,22 @@ router.get(
         .custom((value) => value >= 1)
         .withMessage('"page" cant be 0 '),
     handleErrors,
+    authentificate,
     async (req, res) => {
         try {
-            let filterBy;
-            if (req.query.filterBy) {
-                filterBy = req.query.filterBy;
-            }
-
+            const headers = req.headers.authorization;
+            const token = headers.split(' ')[1];
+            const { id } = verifyToken(token);
+            console.log(id);
+            const filterBy = req.query.filterBy;
             const pp = req.query.pp || 5;
             const order = req.query.order || 'desc';
             const page = req.query.page || 1;
 
             let recievedTodos = await todos.findAndCountAll({
-                where: !filterBy ? {} : { done: filterBy },
+                where: !filterBy
+                    ? { user_id: id }
+                    : { user_id: id, done: filterBy },
                 order: [['createdAt', order]],
                 offset: pp * (page - 1),
                 limit: pp,

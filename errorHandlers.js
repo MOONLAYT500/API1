@@ -32,14 +32,17 @@ const findUser = (nickname) =>
         where: { nickname },
     });
 
-const createToken = (nickname, password) =>
-    jwt.sign({ nickname, password }, token_key, {
-        expiresIn: '12h',
+const createToken = (nickname, id) =>
+    jwt.sign({ nickname:nickname, id:id }, token_key, {
+        expiresIn: '2h',
     });
+
+const verifyToken = (token) => jwt.verify(token, token_key);
 
 module.exports = {
     handleErrors,
     taskExists,
     createToken,
     findUser,
+    verifyToken
 };

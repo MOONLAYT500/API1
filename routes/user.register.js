@@ -7,21 +7,23 @@ router.post('/register', async (req, res) => {
     try {
         const { nickname, password } = req.body;
         if (!(nickname && password)) {
-            res.status(400).send('All fields need to be filled ');
+            return res
+                .status(400)
+                .send({ message: 'All fields need to be filled ' });
         }
 
         const existingUser = await findUser(nickname);
         if (existingUser) {
-            throw 'nickname already exists';
+            return res.status(400).send({ message: 'user already exists' });
         }
 
         const user = await users.create({
             nickname,
             password,
         });
-        res.send(user);
+        return res.send(user);
     } catch (e) {
-        return res.status(400).json({ message: String(e) });
+        return res.status(400).json({ message: 'error' });
     }
 });
 

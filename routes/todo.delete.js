@@ -10,7 +10,7 @@ router.delete(
     handleErrors,
     async (req, res) => {
         try {
-            const todo = await todos.destroy({
+            await todos.destroy({
                 where: {
                     uuid: req.params.id,
                 },
@@ -18,7 +18,7 @@ router.delete(
 
             res.send('deleted');
         } catch (e) {
-            return res.status(400).json({ message: e });
+            return res.status(400).send('cannot delete todo');
         }
     }
 );

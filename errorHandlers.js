@@ -1,5 +1,4 @@
 const { validationResult } = require('express-validator');
-const res = require('express/lib/response');
 const jwt = require('jsonwebtoken');
 const { token_key } = require('./config/config');
 const { users } = require('./models/index');
@@ -13,36 +12,29 @@ const handleErrors = (req, res, next) => {
     next();
 };
 
-const taskExists = (todos, name) => {
-    let result;
-    if (
-        todos.findOne({
-            where: {
-                name: name,
-            },
-        })
-    ) {
-        result = res.status(400).json('task with same name exists');
-    }
-    return result;
-};
-
 const findUser = (nickname) =>
     users.findOne({
         where: { nickname },
     });
 
 const createToken = (nickname, id) =>
-    jwt.sign({ nickname:nickname, id:id }, token_key, {
+    jwt.sign({ nickname: nickname, id: id }, token_key, {
         expiresIn: '2h',
     });
 
 const verifyToken = (token) => jwt.verify(token, token_key);
 
+const getId = (req) => {
+    const headers = req.headers.authorization;
+    const token = headers.split(' ')[1];
+    const { id } = verifyToken(token);
+    return id;
+};
+
 module.exports = {
     handleErrors,
-    taskExists,
     createToken,
     findUser,
-    verifyToken
+    verifyToken,
+    getId,
 };

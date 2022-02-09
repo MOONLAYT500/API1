@@ -42,7 +42,6 @@ module.exports = {
                 },
                 name: {
                     type: Sequelize.STRING,
-                    unique: true,
                 },
                 done: {
                     type: Sequelize.BOOLEAN,

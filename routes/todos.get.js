@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { query } = require('express-validator');
-const { handleErrors, verifyToken } = require('../errorHandlers');
+const { handleErrors, getId } = require('../errorHandlers');
 const { todos } = require('../models/index');
 const authentificate = require('../auth');
 
@@ -25,10 +25,8 @@ router.get(
     authentificate,
     async (req, res) => {
         try {
-            const headers = req.headers.authorization;
-            const token = headers.split(' ')[1];
-            const { id } = verifyToken(token);
-            console.log(id);
+            const id = getId(req);
+
             const filterBy = req.query.filterBy;
             const pp = req.query.pp || 5;
             const order = req.query.order || 'desc';

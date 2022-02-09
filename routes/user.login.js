@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const { createToken, findUser } = require('../errorHandlers');
 const bcrypt = require('bcryptjs/dist/bcrypt');
-const jwt = require('jsonwebtoken');
-const { token_key } = require('../config/config');
 
 router.post('/login', async (req, res) => {
     try {
@@ -19,10 +17,8 @@ router.post('/login', async (req, res) => {
             return res.status(400).send({ message: 'user not found' });
         }
         if (await bcrypt.compare(password, user.password)) {
-            const token = jwt.sign({ nickname, id: user.id }, token_key, {
-                expiresIn: '2h',
-            });
-            return res.send({ token: token });
+            const token = createToken(nickname, user.id);
+            return res.status(200).send({ token: token });
         }
         return res.status(400).send({ message: 'wrong password' });
     } catch (e) {

@@ -11,9 +11,6 @@ app.use(cors());
 app.options('*', cors());
 app.use(express.json());
 
-app.get('/api/welcome', auth, (req, res) => {
-    res.status(200).send('Welcome');
-});
 
 recursive(`${__dirname}/routes`).forEach((file) =>
     app.use(mainUri, require(file))

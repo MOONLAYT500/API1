@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { body, param } = require('express-validator');
 const { todos } = require('../models/index');
-const { handleErrors } = require('../errorHandlers');
+const { handleErrors, getId } = require('../errorHandlers');
 const { Op } = require('sequelize');
 
 router.patch(
@@ -15,24 +15,28 @@ router.patch(
     handleErrors,
     async (req, res) => {
         try {
-            const uuid = req.params.id
-            const { name, done} = req.body;
+            const uuid = req.params.id;
+            const { name, done } = req.body;
+            const id = getId(req);
 
             const taskExists = await todos.findOne({
                 where: {
+                    user_id: id,
                     name: req.body.name,
                     [Op.not]: [{ uuid }],
                 },
             });
             if (taskExists) {
-                return res.status(400).json('task with same name exists');
+                return (
+                    res
+                        .status(400)
+                        // .send({ message: 'task with same name exists' });
+                        .send(taskExists)
+                );
             }
 
-            await todos.update(
-                {
-                    name,
-                    done,
-                },
+            const todo = await todos.update(
+                { name, done },
                 {
                     where: {
                         uuid: req.params.id,
@@ -40,9 +44,9 @@ router.patch(
                 }
             );
 
-            res.send('patched');
+            res.send(todo);
         } catch (e) {
-            return res.status(400).json({ message: String(e) });
+            return res.status(400).send({ message: 'cannot patch' });
         }
     }
 );

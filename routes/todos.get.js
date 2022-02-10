@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const { query } = require('express-validator');
-const { handleErrors, getId } = require('../errorHandlers');
 const { todos } = require('../models/index');
-const authentificate = require('../auth');
+const { authentificate } = require('../services/validationServise');
+const { handleErrors } = require('../services/validationServise');
+const { getId } = require('../services/userService');
 
 router.get(
     '/todos',
@@ -43,7 +44,7 @@ router.get(
 
             res.send({ count: recievedTodos.length, todos: recievedTodos });
         } catch (e) {
-            return res.status(400).json({ message: e });
+            return res.status(400).send({ message: e });
         }
     }
 );

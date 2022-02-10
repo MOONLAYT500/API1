@@ -2,7 +2,10 @@ const express = require('express');
 const router = express.Router();
 const { body, param } = require('express-validator');
 const { todos } = require('../models/index');
-const { handleErrors, getId } = require('../errorHandlers');
+const { authentificate } = require('../services/validationServise');
+const { handleErrors } = require('../services/validationServise');
+const { getId } = require('../services/userService');
+
 const { Op } = require('sequelize');
 
 router.patch(
@@ -13,6 +16,7 @@ router.patch(
         .isLength({ min: 2 })
         .withMessage('length, lesser then one is not allowed'),
     handleErrors,
+    authentificate,
     async (req, res) => {
         try {
             const uuid = req.params.id;
@@ -31,7 +35,10 @@ router.patch(
                     res
                         .status(400)
                         // .send({ message: 'task with same name exists' });
-                        .send(taskExists)
+                        .send({
+                            message: 'task with same name exists',
+                            todo: taskExists,
+                        })
                 );
             }
 

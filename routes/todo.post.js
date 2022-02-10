@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { body, param } = require('express-validator');
-const { handleErrors, getId } = require('../errorHandlers');
+const { body } = require('express-validator');
+const { authentificate } = require('../services/validationServise');
+const { handleErrors } = require('../services/validationServise');
+const { getId } = require('../services/userService');
 const { todos } = require('../models/index');
 
 router.post(
@@ -14,6 +16,7 @@ router.post(
         .isLength({ min: 2 })
         .withMessage('length, lesser then one is not allowed'),
     handleErrors,
+    authentificate,
     async (req, res) => {
         try {
             const id = getId(req);
@@ -21,7 +24,9 @@ router.post(
                 where: { user_id: id, name: req.body.name },
             });
             if (taskExists) {
-                return res.status(400).json('task with same name exists');
+                return res
+                    .status(400)
+                    .send({ message: 'task with same name exists' });
             }
             const todo = await todos.create({
                 user_id: id,

@@ -8,6 +8,8 @@ app.use(cors());
 app.options('*', cors());
 app.use(express.json());
 
+
+
 recursive(`${__dirname}/routes`).forEach((file) =>
     app.use(mainUri, require(file))
 );

@@ -21,6 +21,7 @@ router.post(
             }
 
             const existingUser = await findUser(nickname);
+            console.log(1);
             if (existingUser) {
                 return res
                     .status(400)

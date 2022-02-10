@@ -8,5 +8,16 @@
       <jdbc-url>jdbc:postgresql://localhost:5432/todos</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="d6809m03p09p01@ec2-34-246-24-110.eu-west-1.compute.amazonaws.com" uuid="f034b41d-b28d-46c3-a14b-abe7b62a38a4">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://ec2-34-246-24-110.eu-west-1.compute.amazonaws.com:5432/d6809m03p09p01</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+      <driver-properties>
+        <property name="ssl" value="true" />
+        <property name="sslmode" value="verify-ca" />
+      </driver-properties>
+    </data-source>
   </component>
 </project>

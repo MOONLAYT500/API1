@@ -13,6 +13,9 @@ router.post(
     handleErrors,
     async (req, res) => {
         try {
+
+
+
             const { nickname, password } = req.body;
             if (!(nickname && password)) {
                 return res

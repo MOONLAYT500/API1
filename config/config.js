@@ -16,10 +16,10 @@ require('dotenv').config();
 module.exports = {
     mainUri: '/api',
     basePort: process.env.PORT || 4000,
-    username: process.env.USERNAME_H || '',
-    password: process.env.PASSWORD_H || '',
-    database: process.env.DB_NAME_H || 'postgres',
-    host: process.env.HOST_H || 'localhost',
+    username: process.env.USERNAME || '',
+    password: process.env.PASSWORD || '',
+    database: process.env.DATABASE || 'postgres',
+    host: process.env.HOST || 'localhost',
     dialect: 'postgres',
     dialectOptions: {
         ssl: {

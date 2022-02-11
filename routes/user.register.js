@@ -32,7 +32,6 @@ router.post(
                 nickname,
                 password,
             });
-            console.log(user.id);
             const token = createToken(nickname, user.id);
             return res.status(200).send({ token: token });
         } catch (e) {

@@ -3,7 +3,7 @@ require('dotenv').config();
 // local
 // module.exports = {
 //     mainUri: '/api',
-//     basePort: process.env.BASE_PORT || 8080,
+//     basePort: process.env.PORT || 8080,
 //     username: process.env.USERNAME || '',
 //     password: process.env.PASSWORD || '',
 //     database: process.env.DB_NAME || 'postgres',

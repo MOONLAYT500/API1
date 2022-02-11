@@ -1,7 +1,6 @@
+# environment
+.env
 # node modules
 node_modules
-.env
-#configs to ignore
-#config
 #idea
 .idea

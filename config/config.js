@@ -15,7 +15,7 @@ require('dotenv').config();
 // heroku
 module.exports = {
     mainUri: '/api',
-    basePort: process.env.BASE_PORT || 8080,
+    basePort: process.env.PORT || 4000,
     username: process.env.USERNAME_H || '',
     password: process.env.PASSWORD_H || '',
     database: process.env.DB_NAME_H || 'postgres',

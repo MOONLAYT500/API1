@@ -36,7 +36,7 @@ router.post(
             const token = createToken(nickname, user.id);
             return res.status(200).send({ token: token });
         } catch (e) {
-            return res.status(400).json({ message: 'error' });
+            return res.status(400).send({ message: 'registration error' });
         }
     }
 );

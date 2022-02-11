@@ -13,9 +13,6 @@ router.post(
     handleErrors,
     async (req, res) => {
         try {
-
-
-
             const { nickname, password } = req.body;
             if (!(nickname && password)) {
                 return res
@@ -33,7 +30,7 @@ router.post(
             }
             return res.status(400).send({ message: 'wrong password' });
         } catch (e) {
-            return res.status(400).send({ message: 'error' });
+            return res.status(400).send({ message: 'login error' });
         }
     }
 );
